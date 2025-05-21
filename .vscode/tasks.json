@@ -1,0 +1,54 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Open Warp",
+            "type": "shell",
+            "command": "/usr/bin/open -a Warp \"${workspaceFolder}\" && sleep .2 && osascript -e 'tell application \"Warp\" to activate' -e 'tell application \"System Events\"' -e 'delay .2' -e 'keystroke \"source .venv/bin/activate && source update_pythonpath.sh\"' -e 'delay 1' -e 'key code 36' -e 'end tell'",
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "close": true
+            }
+        },
+        {
+            "label": "Run Warp Command",
+            "type": "shell",
+            "command": "osascript",
+            "args": ["-e", "tell application \"Warp\" to activate", "-e", "tell application \"System Events\" to keystroke \"python \\\"${relativeFile}\\\"\"", "-e", "tell application \"System Events\" to key code 36"],
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "close": true
+            }
+        },
+        {
+            "type": "func",
+            "label": "func: host start",
+            "command": "host start",
+            "problemMatcher": "$func-python-watch",
+            "isBackground": true,
+            "dependsOn": "pip install (functions)"
+        },
+        {
+            "label": "pip install (functions)",
+            "type": "shell",
+            "osx": {
+                "command": "${config:azureFunctions.pythonVenv}/bin/python -m pip install -r requirements.txt"
+            },
+            "windows": {
+                "command": "${config:azureFunctions.pythonVenv}\\Scripts\\python -m pip install -r requirements.txt"
+            },
+            "linux": {
+                "command": "${config:azureFunctions.pythonVenv}/bin/python -m pip install -r requirements.txt"
+            },
+            "problemMatcher": []
+        }
+    ]
+}
